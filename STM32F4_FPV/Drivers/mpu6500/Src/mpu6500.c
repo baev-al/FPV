@@ -19,7 +19,7 @@ uint8_t mpu6500_readMem(uint8_t regAddr, uint8_t size, uint8_t * memData)
 
 uint8_t mpu6500_writeReg(uint8_t regAddr, uint8_t regData)
 {
-	HAL_StatusTypeDef status = HAL_I2C_Mem_Write(&hi2c1, MPU6500_I2C_ADDR, regAddr, I2C_MEMADD_SIZE_8BIT, regData, 1, 1000);
+	HAL_StatusTypeDef status = HAL_I2C_Mem_Write(&hi2c1, MPU6500_I2C_ADDR, regAddr, I2C_MEMADD_SIZE_8BIT, &regData, 1, 1000);
 	return status == HAL_OK;
 }
 

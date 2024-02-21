@@ -24,6 +24,7 @@
 /* USER CODE BEGIN Includes */
 #include "usbd_cdc_if.h"
 #include "mpu6500.h"
+#include "cli.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -33,7 +34,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -47,7 +47,9 @@ I2C_HandleTypeDef hi2c1;
 RTC_HandleTypeDef hrtc;
 
 /* USER CODE BEGIN PV */
-
+uint8_t dataIsReadyForParsing = 0;
+uint8_t * cliBuffer;
+uint32_t cliLength;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -108,11 +110,17 @@ int main(void)
   //uint8_t vcpBuf[256] = "Hello world\n\r";
   while (1)
   {
-	  status = mpu6500_readMem(MPU6500_ACCEL_XOUT_H, 16, memData);
-	  int16_t valx = (memData[0] << 8) + memData[1];
-	  int16_t valy = (memData[2] << 8) + memData[3];
-	  int16_t valz = (memData[4] << 8) + memData[5];
-	  HAL_Delay(500);
+//	  status = mpu6500_readMem(MPU6500_ACCEL_XOUT_H, 16, memData);
+//	  int16_t valx = (memData[0] << 8) + memData[1];
+//	  int16_t valy = (memData[2] << 8) + memData[3];
+//	  int16_t valz = (memData[4] << 8) + memData[5];
+	  //HAL_Delay(500);
+	  if(dataIsReadyForParsing)
+	  {
+		  dataIsReadyForParsing = 0;
+		  CDC_Transmit_FS(cliBuffer, cliLength);
+		  readForParse(cliBuffer, &cliLength);
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

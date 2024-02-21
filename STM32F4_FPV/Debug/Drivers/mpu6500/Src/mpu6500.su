@@ -1,4 +1,0 @@
-../Drivers/mpu6500/Src/mpu6500.c:8:9:mpu6500_readReg	40	static
-../Drivers/mpu6500/Src/mpu6500.c:14:9:mpu6500_readMem	40	static
-../Drivers/mpu6500/Src/mpu6500.c:20:9:mpu6500_writeReg	40	static
-../Drivers/mpu6500/Src/mpu6500.c:27:9:mpu6500_accelSelfTest	8	static

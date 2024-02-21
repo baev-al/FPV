@@ -17,6 +17,7 @@ uint8_t mpu6500_readMem(uint8_t regAddr, uint8_t size, uint8_t * memData);
 uint8_t mpu6500_writeReg(uint8_t regAddr, uint8_t regData);
 
 uint8_t mpu6500_init();
+uint8_t mpu6500_getDeviceID();
 uint8_t mpu6500_accelSelfTest();
 uint8_t mpu6500_getRawAccelData(int16_t * xyzData);
 uint8_t mpu6500_getGyroAccelData(int16_t * xyzData);
