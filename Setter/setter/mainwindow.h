@@ -28,6 +28,8 @@ private slots:
     void on_pushButtonRefresh_clicked();
     void savePortNameToSettings(int ind);
     void savePortSpeedToSettings();
+    void on_pushButtonConnect_clicked();
+    void parse();
 
 private:
     Ui::MainWindow *ui;

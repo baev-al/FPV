@@ -1,6 +1,8 @@
 #include "serialconnection.h"
 
-SerialConnection::SerialConnection() {}
+SerialConnection::SerialConnection()
+{
+}
 
 QStringList SerialConnection::listPort()
 {

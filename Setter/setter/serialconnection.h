@@ -5,9 +5,9 @@
 #include <QSerialPortInfo>
 #include <QStringList>
 
-class SerialConnection
+class SerialConnection : public QSerialPort
 {
-    QSerialPort port;
+    Q_OBJECT
 public:
     SerialConnection();
     QStringList listPort();

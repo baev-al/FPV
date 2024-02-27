@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
+#include <QMessageBox>
 
 void MainWindow::setPortNameFromSettings()
 {
@@ -69,6 +70,7 @@ MainWindow::MainWindow(QWidget *parent)
     setPortSpeedFromSettings();
     connect(ui->comboBox, &QComboBox::activated, this, &MainWindow::savePortNameToSettings);
     connect(ui->lineEditSpeed, &QLineEdit::editingFinished, this, &MainWindow::savePortSpeedToSettings);
+    connect(&serialConnection, &QSerialPort::readyRead, this, &MainWindow::parse);
 }
 
 MainWindow::~MainWindow()
@@ -84,5 +86,43 @@ void MainWindow::on_pushButtonRefresh_clicked()
     {
         ui->comboBox->addItem(item);
     }
+}
+
+void MainWindow::on_pushButtonConnect_clicked()
+{
+    if(ui->pushButtonConnect->text() == "Connect")
+    {
+        serialConnection.setPortName(ui->comboBox->currentText());
+        serialConnection.setBaudRate(ui->lineEditSpeed->text().toInt());
+        if(serialConnection.open(QIODevice::ReadWrite))
+        {
+            ui->pushButtonConnect->setText("Disconnect");
+            ui->pushButtonRefresh->setEnabled(false);
+            ui->comboBox->setEnabled(false);
+            ui->lineEditSpeed->setEnabled(false);
+            ui->labelStatus->setText("Connected");
+        }
+        else
+        {
+            QMessageBox::critical(this, tr("Error"), serialConnection.errorString());
+        }
+    }
+    else
+    {
+        if(serialConnection.isOpen())
+        {
+            serialConnection.close();
+        }
+        ui->pushButtonConnect->setText("Connect");
+        ui->pushButtonRefresh->setEnabled(true);
+        ui->comboBox->setEnabled(true);
+        ui->lineEditSpeed->setEnabled(true);
+        ui->labelStatus->setText("Disconnected");
+    }
+}
+
+void MainWindow::parse()
+{
+    QByteArray ba = serialConnection.readAll();
 }
 
