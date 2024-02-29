@@ -25,6 +25,7 @@
 #include "usbd_cdc_if.h"
 #include "mpu6500.h"
 #include "cli.h"
+#include "process.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -52,6 +53,7 @@ TIM_HandleTypeDef htim1;
 uint8_t dataIsReadyForParsing = 0;
 uint8_t * cliBuffer;
 uint32_t cliLength;
+FCstate fcState = STANDBY;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -127,6 +129,8 @@ int main(void)
 		  CDC_Transmit_FS(cliBuffer, cliLength);
 		  readForParse(cliBuffer, &cliLength);
 	  }
+	  process(fcState);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

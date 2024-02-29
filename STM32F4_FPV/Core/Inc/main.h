@@ -36,7 +36,12 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-
+typedef enum
+{
+	STANDBY,
+	FLY,
+	ACC // when this command is received send back x,y,z giro and acceleration
+} FCstate;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/

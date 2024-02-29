@@ -1,6 +1,7 @@
 #include "cli.h"
 #include "usbd_cdc_if.h"
 
+extern FCstate fcState;
 
 // return: 1 - equal, 0 - not equal
 static uint8_t strComp(uint8_t * s1, uint8_t * s2)
@@ -31,6 +32,10 @@ static uint8_t parse(uint8_t * buf)
 	if(strComp((uint8_t*)"version", buf))
 	{
 		CDC_Transmit_FS((uint8_t*)"\n0.0.0\r\n", 8);
+	}
+	else if(strComp((uint8_t*)"acc", buf))
+	{
+		fcState = ACC;
 	}
 	else
 	{
