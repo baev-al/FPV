@@ -48,6 +48,22 @@ void MainWindow::setValidators()
     ui->lineEditSpeed->setValidator(validator);
 }
 
+void MainWindow::setMode()
+{
+    if(serialConnection.isOpen())
+    {
+        if(ui->tabWidget->currentWidget() == ui->mpuData)
+        {
+            mode = SetterMode::MPU_Data;
+        }
+    }
+    else
+    {
+        mode = SetterMode::Standby;
+    }
+    emit modeIsChanged(mode);
+}
+
 void MainWindow::savePortNameToSettings(int ind)
 {
     QString value = ui->comboBox->itemText(ind);
@@ -68,9 +84,15 @@ MainWindow::MainWindow(QWidget *parent)
     on_pushButtonRefresh_clicked();
     setPortNameFromSettings();
     setPortSpeedFromSettings();
+
     connect(ui->comboBox, &QComboBox::activated, this, &MainWindow::savePortNameToSettings);
     connect(ui->lineEditSpeed, &QLineEdit::editingFinished, this, &MainWindow::savePortSpeedToSettings);
     connect(&serialConnection, &QSerialPort::readyRead, this, &MainWindow::parse);
+    connect(&workerThread, &WorkerThread::requestAccGyroData, this, &MainWindow::requestAccGyroDataSlot);
+    connect(this, &MainWindow::modeIsChanged, &workerThread, &WorkerThread::setMode);
+
+    mode = SetterMode::Standby;
+    workerThread.start();
 }
 
 MainWindow::~MainWindow()
@@ -119,10 +141,19 @@ void MainWindow::on_pushButtonConnect_clicked()
         ui->lineEditSpeed->setEnabled(true);
         ui->labelStatus->setText("Disconnected");
     }
+    setMode();
 }
 
 void MainWindow::parse()
 {
     QByteArray ba = serialConnection.readAll();
+}
+
+void MainWindow::requestAccGyroDataSlot()
+{
+    if(serialConnection.isOpen())
+    {
+        serialConnection.write("acc");
+    }
 }
 

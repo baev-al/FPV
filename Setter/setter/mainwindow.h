@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include "serialconnection.h"
 #include <QSettings>
+#include "structs.h"
+#include "workerthread.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -14,12 +16,18 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+
+    SetterMode mode;
+
     SerialConnection serialConnection;
+    WorkerThread workerThread;
+
     void setPortNameFromSettings();
     void setPortSpeedFromSettings();
     void saveSetting(const QString & setName, const QString & setValue);
     QString readSetting(const QString & setName);
     void setValidators();
+    void setMode();
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -30,6 +38,10 @@ private slots:
     void savePortSpeedToSettings();
     void on_pushButtonConnect_clicked();
     void parse();
+    void requestAccGyroDataSlot();
+
+signals:
+    void modeIsChanged(SetterMode mode);
 
 private:
     Ui::MainWindow *ui;

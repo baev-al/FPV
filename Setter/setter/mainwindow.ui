@@ -119,7 +119,7 @@
       </item>
       <item>
        <widget class="QTabWidget" name="tabWidget">
-        <widget class="QWidget" name="tab">
+        <widget class="QWidget" name="mpuData">
          <attribute name="title">
           <string>MPU Data</string>
          </attribute>

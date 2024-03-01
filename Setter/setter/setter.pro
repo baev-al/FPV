@@ -9,13 +9,18 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    accgyrodatachart.cpp \
     main.cpp \
     mainwindow.cpp \
-    serialconnection.cpp
+    serialconnection.cpp \
+    workerthread.cpp
 
 HEADERS += \
+    accgyrodatachart.h \
     mainwindow.h \
-    serialconnection.h
+    serialconnection.h \
+    structs.h \
+    workerthread.h
 
 FORMS += \
     mainwindow.ui
