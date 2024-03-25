@@ -1,3 +1,4 @@
+```mermaid
 flowchart TD
 
     A[Infinite loop]
@@ -6,3 +7,4 @@ flowchart TD
     D[Function 3]
     A --> B --> C --> D
     D --> A
+```
